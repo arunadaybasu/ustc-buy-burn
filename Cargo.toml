@@ -1,0 +1,15 @@
+[package]
+name = "lunc_ustc_burn_project"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cosmwasm-std = "1.0.0"
+cosmwasm-storage = "1.0.0"
+cw-storage-plus = "1.0.0"
+cw-multi-test = "0.16.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
