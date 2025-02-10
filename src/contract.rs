@@ -6,7 +6,7 @@ use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 use crate::burn::{execute_swap_and_burn, query_burn};
 use crate::staking::{execute_stake, query_stake};
 
-#[entry_point]
+#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
     _deps: DepsMut,
     _env: Env,
@@ -16,7 +16,7 @@ pub fn instantiate(
     Ok(Response::default())
 }
 
-#[entry_point]
+#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
     deps: DepsMut,
     env: Env,
@@ -26,11 +26,12 @@ pub fn execute(
     match msg {
         ExecuteMsg::Stake { amount } => execute_stake(deps, env, info, ExecuteMsg::Stake { amount }),
         ExecuteMsg::SwapAndBurn {} => execute_swap_and_burn(deps, env, info, ExecuteMsg::SwapAndBurn {}),
-        _ => Err(cosmwasm_std::StdError::generic_err("Invalid message type")),
+        ExecuteMsg::ClaimRewards {} => Err(cosmwasm_std::StdError::generic_err("Not implemented")),
+        ExecuteMsg::UpdateRatios { .. } => Err(cosmwasm_std::StdError::generic_err("Not implemented")),
     }
 }
 
-#[entry_point]
+#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::GetStakedBalance { address } => query_stake(deps, env, QueryMsg::GetStakedBalance { address }),

@@ -3,6 +3,9 @@ name = "lunc_ustc_burn_project"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+library = []
+
 [dependencies]
 cosmwasm-std = "1.0.0"
 cosmwasm-storage = "1.0.0"

@@ -1,20 +1,26 @@
 #[cfg(test)]
 mod tests {
-    use cosmwasm_std::{coin, Addr, Response, StdError, Uint128, to_json_binary};
-    use cw_multi_test::{App, ContractWrapper, Executor};
+    use cosmwasm_std::{coin, Addr, Response, StdError, Uint128, to_json_binary, Empty};
+    use cw_multi_test::{Contract, App, ContractWrapper, Executor};
     use lunc_ustc_burn_project::contract::{execute, instantiate, query};
     use lunc_ustc_burn_project::msg::{ExecuteMsg, InstantiateMsg};
+
+    fn mock_contract() -> Box<dyn Contract<Empty>> {
+        let contract = ContractWrapper::new_with_empty(execute, instantiate, query)
+            .with_reply::<StdError>(|_deps, _env, _reply| Ok(Response::default()));
+        Box::new(contract)
+    }
 
     #[test]
     fn test_staking_lunc() {
         let mut app = App::default();
         let sender = Addr::unchecked("terra1user");
 
-        let contract = ContractWrapper::new(instantiate, execute, query)
-            .with_reply::<StdError>(|_deps, _env, _reply| Ok(Response::default()));
-        let code_id = app.store_code(Box::new(contract));
+        let code_id = app.store_code(mock_contract());
 
-        let instantiate_msg = InstantiateMsg {};
+        let instantiate_msg = InstantiateMsg {
+            initial_balance: None,
+        };
         let contract_addr = app.instantiate_contract(
             code_id,
             sender.clone(),
@@ -37,11 +43,11 @@ mod tests {
         let mut app = App::default();
         let sender = Addr::unchecked("terra1user");
 
-        let contract = ContractWrapper::new(instantiate, execute, query)
-            .with_reply::<StdError>(|_deps, _env, _reply| Ok(Response::default()));
-        let code_id = app.store_code(Box::new(contract));
+        let code_id = app.store_code(mock_contract());
 
-        let instantiate_msg = InstantiateMsg {};
+        let instantiate_msg = InstantiateMsg {
+            initial_balance: None,
+        };
         let contract_addr = app.instantiate_contract(
             code_id,
             sender.clone(),
