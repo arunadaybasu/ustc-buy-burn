@@ -6,17 +6,18 @@ use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 use crate::burn::{execute_swap_and_burn, query_burn};
 use crate::staking::{execute_stake, query_stake};
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+#[entry_point]
 pub fn instantiate(
     _deps: DepsMut,
     _env: Env,
     _info: MessageInfo,
-    _msg: InstantiateMsg,
+    msg: InstantiateMsg,
 ) -> StdResult<Response> {
-    Ok(Response::default())
+    // You can use msg.initial_balance here if needed
+    Ok(Response::new().add_attribute("action", "instantiate"))
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+#[entry_point]
 pub fn execute(
     deps: DepsMut,
     env: Env,
@@ -31,7 +32,7 @@ pub fn execute(
     }
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+#[entry_point]
 pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::GetStakedBalance { address } => query_stake(deps, env, QueryMsg::GetStakedBalance { address }),

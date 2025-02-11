@@ -6,8 +6,7 @@ mod tests {
     use lunc_ustc_burn_project::msg::{ExecuteMsg, InstantiateMsg};
 
     fn mock_contract() -> Box<dyn Contract<Empty>> {
-        let contract = ContractWrapper::new_with_empty(execute, instantiate, query)
-            .with_reply::<StdError>(|_deps, _env, _reply| Ok(Response::default()));
+        let contract = ContractWrapper::new(instantiate, execute, query);
         Box::new(contract)
     }
 
